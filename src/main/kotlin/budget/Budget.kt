@@ -1,5 +1,6 @@
 package budget
 
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -14,6 +15,14 @@ data class Budget(
 
     fun getYearMonth(): YearMonth {
         return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"));
+    }
+
+    fun lastDay(): LocalDate {
+        return getYearMonth().atEndOfMonth();
+    }
+
+    fun firstDay(): LocalDate {
+        return getYearMonth().atDay(1);
     }
 
 }
