@@ -26,29 +26,12 @@ class BudgetService(
         while (currentYearMonth <= YearMonth.from(endDate)) {
             val budget = budgets.find { it.getYearMonth() == currentYearMonth }
             if (budget != null) {
-                val overlappingDays = overlappingDays(budget, Period(startDate, endDate))
+                val overlappingDays = Period(startDate, endDate).overlappingDays(budget)
                 amount += budget.dailyAmount() * overlappingDays
             }
             currentYearMonth = currentYearMonth.plusMonths(1)
         }
         return amount
-    }
-
-    private fun overlappingDays(budget: Budget, period: Period): Long {
-        val overlappingStart: LocalDate
-        val overlappingEnd: LocalDate
-        if (budget.getYearMonth() == YearMonth.from(period.startDate)) {
-            overlappingEnd = budget.lastDay()
-            overlappingStart = period.startDate
-        } else if (budget.getYearMonth() == YearMonth.from(period.endDate)) {
-            overlappingEnd = period.endDate
-            overlappingStart = budget.firstDay()
-        } else {
-            overlappingEnd = budget.lastDay()
-            overlappingStart = budget.firstDay()
-        }
-        val overlappingDays = ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1
-        return overlappingDays
     }
 
 }
