@@ -9,11 +9,17 @@ import java.util.Locale
 data class Budget(
     val yearMonth: String = "",
     val amount: Int = 0
-){
+) {
 
-    fun getYearMonthDate() : LocalDate {
+    fun dailyAmount(): Double {
+        return amount.toDouble() / YearMonth.of(getYearMonth().year, getYearMonth().monthValue)
+            .lengthOfMonth()
+    }
+
+    fun getYearMonthDate(): LocalDate {
         return getYearMonth().atDay(1)
     }
+
     fun getYearMonth(): YearMonth {
         val formatter: DateTimeFormatter = DateTimeFormatterBuilder()
             .parseCaseInsensitive()
