@@ -1,10 +1,8 @@
 package budget
 
-import java.time.Duration.between
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
-import java.util.concurrent.TimeUnit
 
 class BudgetService(
     private val budgetRepo: BudgetRepo
@@ -14,7 +12,6 @@ class BudgetService(
         if (endDate.isBefore(startDate)) return 0.0
         val budgets = budgetRepo.getAll()
 
-        val dayAmountMap = mutableMapOf<YearMonth, Double>()
         val startYearMonth = YearMonth.from(startDate)
         var currentYearMonth = startYearMonth
         var amount = 0.00
@@ -38,28 +35,10 @@ class BudgetService(
                 } else {
                     amount += budget.amount
                 }
-//                dayAmountMap[currentYearMonth] = dailyAmount
             }
             currentYearMonth = currentYearMonth.plusMonths(1)
         }
         return amount
-//        val map = mutableMapOf<YearMonth, Int>()
-//        var date = startDate
-//        while (date <= endDate) {
-//            val keyMonth = YearMonth.of(date.year, date.month)
-//            if (map.containsKey(keyMonth)) {
-//                map[keyMonth] = map[keyMonth]!!.plus(1)
-//            } else {
-//                map[keyMonth] = 1
-//            }
-//            date = date.plusDays(1)
-//        }
-//
-//        map.forEach { (yearMonth, day) ->
-//            amount += day * (dayAmountMap[yearMonth] ?: 0.00)
-//        }
-//
-//        return amount
     }
 
 }
