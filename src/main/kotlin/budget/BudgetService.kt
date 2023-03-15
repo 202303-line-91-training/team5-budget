@@ -21,9 +21,10 @@ class BudgetService(
             if (budget != null) {
                 val dailyAmount = budget.dailyAmount()
                 if (startYearMonth == endYearMonth) {
-                    return dailyAmount * (ChronoUnit.DAYS.between(startDate, endDate) + 1)
-                }
-                if (budget.getYearMonth() == startYearMonth) {
+                    val overlappingStart = startDate
+                    val overlappingEnd = endDate
+                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
+                } else if (budget.getYearMonth() == startYearMonth) {
                     val overlappingEnd = budget.lastDay()
                     val overlappingStart = startDate
                     amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
