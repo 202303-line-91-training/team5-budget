@@ -33,7 +33,10 @@ class BudgetService(
                     val overlappingStart = budget.firstDay()
                     amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
                 } else {
-                    amount += budget.amount
+                    val overlappingEnd = budget.lastDay()
+                    val overlappingStart = budget.firstDay()
+                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
+//                    amount += budget.amount
                 }
             }
             currentYearMonth = currentYearMonth.plusMonths(1)
