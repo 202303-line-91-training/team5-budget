@@ -21,8 +21,11 @@ class BudgetService(
         val dayAmountMap = mutableMapOf<YearMonth, Double>()
         var currentYearMonth = startYearMonth;
         while (currentYearMonth <= endYearMonth) {
-            val monthBudget = yearMonthBudgetMap[currentYearMonth] ?: Budget(currentYearMonth.toMyString())
-            dayAmountMap[currentYearMonth] = monthBudget.dailyAmount()
+            val budget = budgets.find { it.getYearMonth() == currentYearMonth };
+//            val budget = yearMonthBudgetMap[currentYearMonth]
+            if (budget != null) {
+                dayAmountMap[currentYearMonth] = budget.dailyAmount()
+            }
             currentYearMonth = currentYearMonth.plusMonths(1)
         }
         val map = mutableMapOf<YearMonth, Int>()
