@@ -16,13 +16,11 @@ class BudgetService(
             !(startYearMonth.isAfter(yearMonth) || endYearMonth
                 .isBefore(yearMonth))
         }
-        val yearMonthBudgetMap: Map<YearMonth, Budget> = budgets.associateBy { it.getYearMonth() }
 
         val dayAmountMap = mutableMapOf<YearMonth, Double>()
-        var currentYearMonth = startYearMonth;
+        var currentYearMonth = startYearMonth
         while (currentYearMonth <= endYearMonth) {
-            val budget = budgets.find { it.getYearMonth() == currentYearMonth };
-//            val budget = yearMonthBudgetMap[currentYearMonth]
+            val budget = budgets.find { it.getYearMonth() == currentYearMonth }
             if (budget != null) {
                 dayAmountMap[currentYearMonth] = budget.dailyAmount()
             }
@@ -48,14 +46,4 @@ class BudgetService(
         return amount
     }
 
-    fun getRange(start: YearMonth, end: YearMonth): List<Budget> {
-        val budgetList: List<Budget> = budgetRepo.getAll()
-
-        return budgetList.filter {
-            val yearMonth = it.getYearMonth()
-            !(start.isAfter(yearMonth) || end.isBefore(yearMonth))
-        }
-    }
-
-    fun YearMonth.toMyString(): String = this.toString().replace("-", "")
 }
