@@ -26,7 +26,8 @@ class BudgetService(
         while (currentYearMonth <= YearMonth.from(endDate)) {
             val budget = budgets.find { it.getYearMonth() == currentYearMonth }
             if (budget != null) {
-                val overlappingDays = Period(startDate, endDate).overlappingDays(budget)
+                val overlappingDays =
+                    Period(startDate, endDate).overlappingDays(Period(budget.firstDay(), budget.lastDay()))
                 amount += budget.dailyAmount() * overlappingDays
             }
             currentYearMonth = currentYearMonth.plusMonths(1)
