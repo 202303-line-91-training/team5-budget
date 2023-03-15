@@ -9,20 +9,23 @@ class BudgetService(
 
     fun query(startDate: LocalDate, endDate: LocalDate): Double {
         if (endDate.isBefore(startDate)) return 0.0
+        val startYearMonth = YearMonth.from(startDate)
+        val endYearMonth = YearMonth.from(endDate)
         val budgets = budgetRepo.getAll().filter {
             val yearMonth = it.getYearMonth()
-            !(YearMonth.from(startDate).isAfter(yearMonth) || YearMonth.from(endDate)
+            !(startYearMonth.isAfter(yearMonth) || endYearMonth
                 .isBefore(yearMonth))
         }
         val yearMonthBudgetMap: Map<YearMonth, Budget> = budgets.associateBy { it.getYearMonth() }
 
-        var yearMonth = YearMonth.of(startDate.year, startDate.month)
-        val endYearMonth = YearMonth.of(endDate.year, endDate.month)
+//        var yearMonth = YearMonth.of(startDate.year, startDate.month)
+//        val endYearMonth = YearMonth.of(endDate.year, endDate.month)
         val dayAmountMap = mutableMapOf<YearMonth, Double>()
-        while (yearMonth <= endYearMonth) {
-            val monthBudget = yearMonthBudgetMap[yearMonth] ?: Budget(yearMonth.toMyString())
-            dayAmountMap[yearMonth] = getDayBudget(monthBudget)
-            yearMonth = yearMonth.plusMonths(1)
+        var currentYearMonth = startYearMonth;
+        while (currentYearMonth <= endYearMonth) {
+            val monthBudget = yearMonthBudgetMap[currentYearMonth] ?: Budget(currentYearMonth.toMyString())
+            dayAmountMap[currentYearMonth] = getDayBudget(monthBudget)
+            currentYearMonth = currentYearMonth.plusMonths(1)
         }
         val map = mutableMapOf<YearMonth, Int>()
         var date = startDate
