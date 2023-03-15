@@ -8,11 +8,13 @@ class BudgetService(
 ) {
 
     fun query(startDate: LocalDate, endDate: LocalDate): Double {
-        val yearMonthBudgetMap: Map<YearMonth, Budget> = getRange(
-            start = YearMonth.from(startDate),
-            end = YearMonth.from(endDate)
-        ).associateBy { it.getYearMonth() }
-//        ).associateBy { YearMonth.of(it.getYearMonthDate().year, it.getYearMonthDate().monthValue) }
+        if (endDate.isBefore(startDate)) return 0.0
+        val budgets = budgetRepo.getAll().filter {
+            val yearMonth = it.getYearMonth()
+            !(YearMonth.from(startDate).isAfter(yearMonth) || YearMonth.from(endDate)
+                .isBefore(yearMonth))
+        }
+        val yearMonthBudgetMap: Map<YearMonth, Budget> = budgets.associateBy { it.getYearMonth() }
 
         var yearMonth = YearMonth.of(startDate.year, startDate.month)
         val endYearMonth = YearMonth.of(endDate.year, endDate.month)
@@ -43,14 +45,11 @@ class BudgetService(
     }
 
     fun getRange(start: YearMonth, end: YearMonth): List<Budget> {
-        if (end.isBefore(start)) return emptyList()
         val budgetList: List<Budget> = budgetRepo.getAll()
 
         return budgetList.filter {
             val yearMonth = it.getYearMonth()
-            val compareToEnd = yearMonth.compareTo(end)
-            val compareToStart = yearMonth.compareTo(start)
-            (compareToStart >= 0) && (compareToEnd <= 0)
+            !(start.isAfter(yearMonth) || end.isBefore(yearMonth))
         }
     }
 
