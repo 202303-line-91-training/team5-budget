@@ -14,6 +14,11 @@ data class Budget(
         return amount.toDouble() / getYearMonth().lengthOfMonth()
     }
 
+     fun overlappingAmount(period: Period): Double {
+        val overlappingDays =
+            period.overlappingDays(createPeriod())
+        return dailyAmount() * overlappingDays
+    }
     fun getYearMonth(): YearMonth {
         return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"))
     }
