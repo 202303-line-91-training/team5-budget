@@ -11,7 +11,8 @@ class BudgetService(
         val yearMonthBudgetMap: Map<YearMonth, Budget> = getRange(
             start = YearMonth.from(startDate),
             end = YearMonth.from(endDate)
-        ).associateBy { YearMonth.of(it.getYearMonthDate().year, it.getYearMonthDate().monthValue) }
+        ).associateBy { it.getYearMonth() }
+//        ).associateBy { YearMonth.of(it.getYearMonthDate().year, it.getYearMonthDate().monthValue) }
 
         var yearMonth = YearMonth.of(startDate.year, startDate.month)
         val endYearMonth = YearMonth.of(endDate.year, endDate.month)
