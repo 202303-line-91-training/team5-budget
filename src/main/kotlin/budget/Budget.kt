@@ -24,7 +24,7 @@ data class Budget(
     }
 
     fun lastDay(): LocalDate {
-        return getYearMonth().atEndOfMonth();
+        return getYearMonth().atEndOfMonth()
     }
 
     fun firstDay(): LocalDate {
