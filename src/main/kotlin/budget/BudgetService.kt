@@ -11,11 +11,12 @@ class BudgetService(
         if (endDate.isBefore(startDate)) return 0.0
         val startYearMonth = YearMonth.from(startDate)
         val endYearMonth = YearMonth.from(endDate)
-        val budgets = budgetRepo.getAll().filter {
-            val yearMonth = it.getYearMonth()
-            !(startYearMonth.isAfter(yearMonth) || endYearMonth
-                .isBefore(yearMonth))
-        }
+        val budgets = budgetRepo.getAll()
+//            .filter {
+//            val yearMonth = it.getYearMonth()
+//            !(startYearMonth.isAfter(yearMonth) || endYearMonth
+//                .isBefore(yearMonth))
+//        }
 
         val dayAmountMap = mutableMapOf<YearMonth, Double>()
         var currentYearMonth = startYearMonth
