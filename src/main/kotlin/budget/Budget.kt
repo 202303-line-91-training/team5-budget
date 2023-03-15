@@ -15,7 +15,7 @@ data class Budget(
     }
 
     fun getYearMonth(): YearMonth {
-        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"));
+        return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"))
     }
 
     fun lastDay(): LocalDate {
