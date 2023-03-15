@@ -9,23 +9,25 @@ data class Budget(
     val amount: Int = 0
 ) {
 
-    fun createPeriod() = Period(firstDay(), lastDay())
-    fun dailyAmount(): Double {
+    fun overlappingAmount(period: Period): Double {
+        return dailyAmount() * period.overlappingDays(createPeriod())
+    }
+
+    private fun createPeriod() = Period(firstDay(), lastDay())
+
+    private fun dailyAmount(): Double {
         return amount.toDouble() / getYearMonth().lengthOfMonth()
     }
 
-     fun overlappingAmount(period: Period): Double {
-         return dailyAmount() * period.overlappingDays(createPeriod())
-     }
-    fun getYearMonth(): YearMonth {
+    private fun getYearMonth(): YearMonth {
         return YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyyMM"))
     }
 
-    fun lastDay(): LocalDate {
+    private fun lastDay(): LocalDate {
         return getYearMonth().atEndOfMonth()
     }
 
-    fun firstDay(): LocalDate {
+    private fun firstDay(): LocalDate {
         return getYearMonth().atDay(1)
     }
 
