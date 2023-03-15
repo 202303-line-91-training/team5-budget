@@ -12,11 +12,9 @@ class BudgetService(
         if (endDate.isBefore(startDate)) return 0.0
         val budgets = budgetRepo.getAll()
 
-        val startYearMonth = YearMonth.from(startDate)
-        var currentYearMonth = startYearMonth
+        var currentYearMonth = YearMonth.from(startDate)
         var amount = 0.00
-        val endYearMonth = YearMonth.from(endDate)
-        if (startYearMonth == endYearMonth) {
+        if (YearMonth.from(startDate) == YearMonth.from(endDate)) {
             val overlappingStart = startDate
             val overlappingEnd = endDate
             val overlappingDays = ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1
@@ -25,15 +23,15 @@ class BudgetService(
                 return budget.dailyAmount() * overlappingDays
             }
         }
-        while (currentYearMonth <= endYearMonth) {
+        while (currentYearMonth <= YearMonth.from(endDate)) {
             val budget = budgets.find { it.getYearMonth() == currentYearMonth }
             if (budget != null) {
                 val overlappingStart: LocalDate
                 val overlappingEnd: LocalDate
-                if (budget.getYearMonth() == startYearMonth) {
+                if (budget.getYearMonth() == YearMonth.from(startDate)) {
                     overlappingEnd = budget.lastDay()
                     overlappingStart = startDate
-                } else if (budget.getYearMonth() == endYearMonth) {
+                } else if (budget.getYearMonth() == YearMonth.from(endDate)) {
                     overlappingEnd = endDate
                     overlappingStart = budget.firstDay()
                 } else {
