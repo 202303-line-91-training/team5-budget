@@ -25,19 +25,15 @@ class BudgetService(
                 if (startYearMonth == endYearMonth) {
                     overlappingStart = startDate
                     overlappingEnd = endDate
-//                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
                 } else if (budget.getYearMonth() == startYearMonth) {
                     overlappingEnd = budget.lastDay()
                     overlappingStart = startDate
-//                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
                 } else if (budget.getYearMonth() == endYearMonth) {
                     overlappingEnd = endDate
                     overlappingStart = budget.firstDay()
-//                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
                 } else {
                     overlappingEnd = budget.lastDay()
                     overlappingStart = budget.firstDay()
-//                    amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
                 }
                 amount += dailyAmount * (ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1)
             }
