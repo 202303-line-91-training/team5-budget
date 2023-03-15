@@ -35,6 +35,4 @@ class BudgetService(
         return amount
     }
 
-    private fun Budget.createPeriod() = Period(firstDay(), lastDay())
-
 }

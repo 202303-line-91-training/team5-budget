@@ -9,6 +9,7 @@ data class Budget(
     val amount: Int = 0
 ) {
 
+    fun createPeriod() = Period(firstDay(), lastDay())
     fun dailyAmount(): Double {
         return amount.toDouble() / getYearMonth().lengthOfMonth()
     }
