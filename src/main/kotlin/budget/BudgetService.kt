@@ -35,13 +35,14 @@ class BudgetService(
     }
 
     private fun overlappingDays(budget: Budget, startDate: LocalDate, endDate: LocalDate): Long {
+        val period = Period(startDate, endDate)
         val overlappingStart: LocalDate
         val overlappingEnd: LocalDate
-        if (budget.getYearMonth() == YearMonth.from(startDate)) {
+        if (budget.getYearMonth() == YearMonth.from(period.startDate)) {
             overlappingEnd = budget.lastDay()
-            overlappingStart = startDate
-        } else if (budget.getYearMonth() == YearMonth.from(endDate)) {
-            overlappingEnd = endDate
+            overlappingStart = period.startDate
+        } else if (budget.getYearMonth() == YearMonth.from(period.endDate)) {
+            overlappingEnd = period.endDate
             overlappingStart = budget.firstDay()
         } else {
             overlappingEnd = budget.lastDay()
