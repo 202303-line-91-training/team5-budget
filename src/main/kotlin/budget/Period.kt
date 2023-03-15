@@ -6,8 +6,10 @@ import java.time.temporal.ChronoUnit
 class Period(private val startDate: LocalDate, private val endDate: LocalDate) {
 
     fun overlappingDays(budget: Budget): Long {
-        val overlappingStart: LocalDate = if (startDate.isAfter(budget.firstDay())) startDate else budget.firstDay()
-        val overlappingEnd: LocalDate = if (endDate.isBefore(budget.lastDay())) endDate else budget.lastDay()
+        val firstDay = budget.firstDay()
+        val lastDay = budget.lastDay()
+        val overlappingStart: LocalDate = if (startDate.isAfter(firstDay)) startDate else firstDay
+        val overlappingEnd: LocalDate = if (endDate.isBefore(lastDay)) endDate else lastDay
         return ChronoUnit.DAYS.between(overlappingStart, overlappingEnd) + 1
     }
 }
